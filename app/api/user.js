@@ -17,7 +17,11 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      const user = await storage.getUser(1); // In a real app, get user from session
+      const session = req.session;
+      if (!session?.userId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+      const user = await storage.getUser(session.userId);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
