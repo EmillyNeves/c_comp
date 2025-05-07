@@ -1,0 +1,13 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Serverless API routes for Vercel",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
+    "drizzle-orm": "^0.29.3",
+    "zod": "^3.22.4",
+    "zod-validation-error": "^3.0.0"
+  }
+}
