@@ -86,8 +86,8 @@ const CharacterProfile: React.FC<CharacterProfileProps> = ({ user }) => {
             size="md" 
             className="mr-3 border-accent"
           />
-          <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <span className="text-white text-xs font-fira">Editar</span>
+          <div className="absolute inset-0 bg-black/50 dark:bg-black/70 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <span className="text-white dark:text-foreground text-xs font-fira">Editar</span>
           </div>
         </div>
         
@@ -97,8 +97,8 @@ const CharacterProfile: React.FC<CharacterProfileProps> = ({ user }) => {
             <span className="text-accent font-orbitron ml-1">{currentUser.username}</span>
           </div>
           <div className="flex items-center mt-1">
-            <span className="text-white/70 font-fira text-xs">Título: </span>
-            <span className="text-white/90 font-fira text-xs ml-1">{currentUser.title}</span>
+            <span className="text-foreground/70 font-fira text-xs">Título: </span>
+            <span className="text-foreground/90 font-fira text-xs ml-1">{currentUser.title}</span>
           </div>
         </div>
       </div>
@@ -123,7 +123,7 @@ const CharacterProfile: React.FC<CharacterProfileProps> = ({ user }) => {
           {statItems.map((stat) => (
             <div key={stat.label}>
               <div className="flex justify-between">
-                <span className="text-white/80 title-caps">{stat.label}</span>
+                <span className="text-foreground/80 title-caps">{stat.label}</span>
                 <span className={stat.value < 60 ? "text-yellow-400" : "text-accent"}>
                   {stat.value}/{stat.max}
                 </span>
@@ -141,15 +141,15 @@ const CharacterProfile: React.FC<CharacterProfileProps> = ({ user }) => {
       {/* Level Progress */}
       <div className="mt-6">
         <div className="flex justify-between items-center">
-          <span className="text-white/90 font-orbitron text-xs title-caps">LEVEL</span>
+          <span className="text-foreground/90 font-orbitron text-xs title-caps">LEVEL</span>
           <span className="text-primary font-orbitron text-lg">{currentUser.level}</span>
         </div>
         <Progress value={xpPercentage} className="mt-2" indicatorColor="bg-primary" />
         <div className="flex justify-between mt-1">
-          <span className="text-white/60 font-fira text-xs">
+          <span className="text-foreground/60 font-fira text-xs">
             XP: {currentUser.xp.current}/{currentUser.xp.max}
           </span>
-          <span className="text-white/60 font-fira text-xs">{xpPercentage.toFixed(0)}%</span>
+          <span className="text-foreground/60 font-fira text-xs">{xpPercentage.toFixed(0)}%</span>
         </div>
       </div>
 

@@ -43,7 +43,7 @@ const BottomNavigation: React.FC = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-primary/30 py-2 px-4 z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-primary/30 dark:border-primary/20 py-2 px-4 z-50">
       <div className="container mx-auto">
         <ul className="flex justify-center items-center space-x-2 lg:space-x-8">
           {navItems.map((item) => (
@@ -53,7 +53,7 @@ const BottomNavigation: React.FC = () => {
                 className={`nav-item flex flex-col items-center p-2 rounded-md ${
                   isActive(item.path)
                     ? "text-primary"
-                    : "text-white/70 hover:text-primary"
+                    : "text-foreground/70 hover:text-primary"
                 }`}
               >
                 {item.icon}

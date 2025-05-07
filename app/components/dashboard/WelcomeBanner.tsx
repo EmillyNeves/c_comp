@@ -273,7 +273,7 @@ Complete desafios, acumule XP, suba de nível e desbloqueie novas habilidades.`;
             <br />
             NAVIGATOR
           </h1>
-          <p className="font-fira text-white/80 max-w-md mt-6 text-sm hacking-text formatted-text">
+          <p className="font-fira text-foreground/80 max-w-md mt-6 text-sm hacking-text formatted-text">
             {formattedText}
             {!isTypingComplete && <span className="animate-pulse">|</span>}
           </p>

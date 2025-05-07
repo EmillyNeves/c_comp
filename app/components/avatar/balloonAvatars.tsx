@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../theme/ThemeProvider';
 
 export interface BalloonAvatarProps {
   color: string;
@@ -10,6 +11,7 @@ export interface BalloonAvatarProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   expression?: 'happy' | 'tired';
   className?: string;
+  themeAware?: boolean; // New prop to control if avatar should adapt to theme
 }
 
 const BalloonAvatar: React.FC<BalloonAvatarProps> = ({
@@ -22,7 +24,11 @@ const BalloonAvatar: React.FC<BalloonAvatarProps> = ({
   size = 'md',
   expression = 'happy',
   className = '',
+  themeAware = true, // Default to theme-aware
 }) => {
+  // Get current theme from ThemeProvider
+  const { theme } = useTheme();
+  
   // Define size values based on the size prop
   const dimensions = {
     sm: { width: 60, height: 60 },
@@ -31,19 +37,49 @@ const BalloonAvatar: React.FC<BalloonAvatarProps> = ({
     xl: { width: 200, height: 200 },
   };
 
+  // Apply theme-based styling if themeAware is true
+  const getThemeAdjustedColor = (colorValue: string) => {
+    if (!themeAware) return colorValue;
+    
+    // For light theme, make colors slightly more muted/pastel
+    if (theme === 'light') {
+      // If it's a hex color, convert to a more muted version for light theme
+      if (colorValue.startsWith('#')) {
+        // Simple muting algorithm - you could use a more sophisticated approach
+        const r = parseInt(colorValue.slice(1, 3), 16);
+        const g = parseInt(colorValue.slice(3, 5), 16);
+        const b = parseInt(colorValue.slice(5, 7), 16);
+        
+        // Desaturate by mixing with white
+        const desaturateAmount = 0.3; // 30% desaturation
+        const newR = Math.floor(r + (255 - r) * desaturateAmount);
+        const newG = Math.floor(g + (255 - g) * desaturateAmount);
+        const newB = Math.floor(b + (255 - b) * desaturateAmount);
+        
+        return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+      }
+    }
+    
+    return colorValue;
+  };
+  
+  // Apply theme adjustments to colors
+  const themeAdjustedColor = getThemeAdjustedColor(color);
+  const themeAdjustedDetailColor = getThemeAdjustedColor(detailColor);
+  
   const { width, height } = dimensions[size];
   
   // Base balloon shapes
   const renderShape = () => {
     switch (shape) {
       case 'round':
-        return <circle cx="50" cy="40" r="30" fill={color} />;
+        return <circle cx="50" cy="40" r="30" fill={themeAdjustedColor} />;
       case 'oval':
-        return <ellipse cx="50" cy="40" rx="20" ry="35" fill={color} />;
+        return <ellipse cx="50" cy="40" rx="20" ry="35" fill={themeAdjustedColor} />;
       case 'square':
-        return <rect x="25" y="15" width="50" height="50" rx="10" fill={color} />;
+        return <rect x="25" y="15" width="50" height="50" rx="10" fill={themeAdjustedColor} />;
       default:
-        return <circle cx="50" cy="40" r="30" fill={color} />;
+        return <circle cx="50" cy="40" r="30" fill={themeAdjustedColor} />;
     }
   };
 
@@ -53,7 +89,7 @@ const BalloonAvatar: React.FC<BalloonAvatarProps> = ({
     return (
       <path 
         d={`M50 ${yOffset} Q45 85 55 95`} 
-        stroke={detailColor} 
+        stroke={themeAdjustedDetailColor} 
         strokeWidth="1.5" 
         fill="none" 
       />
@@ -66,32 +102,32 @@ const BalloonAvatar: React.FC<BalloonAvatarProps> = ({
       case 'dots':
         return (
           <>
-            <circle cx="40" cy="30" r="3" fill={detailColor} />
-            <circle cx="60" cy="30" r="3" fill={detailColor} />
-            <circle cx="40" cy="50" r="3" fill={detailColor} />
-            <circle cx="60" cy="50" r="3" fill={detailColor} />
-            <circle cx="50" cy="40" r="3" fill={detailColor} />
+            <circle cx="40" cy="30" r="3" fill={themeAdjustedDetailColor} />
+            <circle cx="60" cy="30" r="3" fill={themeAdjustedDetailColor} />
+            <circle cx="40" cy="50" r="3" fill={themeAdjustedDetailColor} />
+            <circle cx="60" cy="50" r="3" fill={themeAdjustedDetailColor} />
+            <circle cx="50" cy="40" r="3" fill={themeAdjustedDetailColor} />
           </>
         );
       case 'stripes':
         return (
           <>
-            <path d="M30 30 L70 30" stroke={detailColor} strokeWidth="3" />
-            <path d="M30 40 L70 40" stroke={detailColor} strokeWidth="3" />
-            <path d="M30 50 L70 50" stroke={detailColor} strokeWidth="3" />
+            <path d="M30 30 L70 30" stroke={themeAdjustedDetailColor} strokeWidth="3" />
+            <path d="M30 40 L70 40" stroke={themeAdjustedDetailColor} strokeWidth="3" />
+            <path d="M30 50 L70 50" stroke={themeAdjustedDetailColor} strokeWidth="3" />
           </>
         );
       case 'spiral':
         return (
-          <path d="M50 25 C60 30 60 40 50 45 C40 50 40 60 50 65" stroke={detailColor} strokeWidth="2" fill="none" />
+          <path d="M50 25 C60 30 60 40 50 45 C40 50 40 60 50 65" stroke={themeAdjustedDetailColor} strokeWidth="2" fill="none" />
         );
       case 'stars':
         return (
           <>
-            <path d="M40 30 L42 25 L44 30 L39 27 L45 27 Z" fill={detailColor} />
-            <path d="M60 30 L62 25 L64 30 L59 27 L65 27 Z" fill={detailColor} />
-            <path d="M40 50 L42 45 L44 50 L39 47 L45 47 Z" fill={detailColor} />
-            <path d="M60 50 L62 45 L64 50 L59 47 L65 47 Z" fill={detailColor} />
+            <path d="M40 30 L42 25 L44 30 L39 27 L45 27 Z" fill={themeAdjustedDetailColor} />
+            <path d="M60 30 L62 25 L64 30 L59 27 L65 27 Z" fill={themeAdjustedDetailColor} />
+            <path d="M40 50 L42 45 L44 50 L39 47 L45 47 Z" fill={themeAdjustedDetailColor} />
+            <path d="M60 50 L62 45 L64 50 L59 47 L65 47 Z" fill={themeAdjustedDetailColor} />
           </>
         );
       default:
@@ -127,7 +163,7 @@ const BalloonAvatar: React.FC<BalloonAvatarProps> = ({
         );
       case 'initials':
         return (
-          <text x="50" y="40" fontSize="10" fill={detailColor} textAnchor="middle">ME</text>
+          <text x="50" y="40" fontSize="10" fill={themeAdjustedDetailColor} textAnchor="middle">ME</text>
         );
       case 'neon':
         return (

@@ -312,6 +312,7 @@ const AnimatedAvatar: React.FC<AnimatedAvatarProps> = ({
           {...mapConfigToBalloonProps() as BalloonAvatarProps}
           size={size}
           className={className}
+          themeAware={true}
         />
       ) : (
         <Avatar className={`${sizeClasses[size]} border-2 border-primary ${className}`}>
